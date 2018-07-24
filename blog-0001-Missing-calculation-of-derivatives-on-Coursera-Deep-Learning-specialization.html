@@ -5,218 +5,218 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
-	<!-- MathJax -->
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    
+    <!-- MathJax -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<!-- Custom styles for this template -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- Custom styles for this template -->
     <link href="jumbotron.css" rel="stylesheet">
     <title>HALINA9000 - Blog - Missing calculation of derivatives on Coursera Deep Learning specialization</title>
-	<meta name="description" content="Missing calculation of derivatives on Coursera Deep Learning specialization">
+    <meta name="description" content="Missing calculation of derivatives on Coursera Deep Learning specialization">
     <meta name="keywords" content="deep learning,machine learning,ai,artificial intelligence,coursera,calculus,math,andrew ng,halina9000,blog">
   </head>
 
   <body>
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light border-bottom">
-	  <div class="container">
-	    <a class="navbar-brand text-monospace text-dark mr-0 pr-0" href="index.html#">HALINA9000</a>
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-	    </button>
+      <div class="container">
+        <a class="navbar-brand text-monospace text-dark mr-0 pr-0" href="index.html#">HALINA9000</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       
-	    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
           <a class="nav-item nav-link" href="index.html#">Home</a>
           <a class="nav-item nav-link" href="index.html#blog"></i>Blog</a>
           <a class="nav-item nav-link" href="index.html#about">About</a>
-		  <a class="nav-item nav-link" href="index.html#certificates">Certificates</a>
+          <a class="nav-item nav-link" href="index.html#certificates">Certificates</a>
           <a class="nav-item nav-link" href="index.html#contact">Contact</a>
-		  <a class="nav-item nav-link" href="index.html#acknowledments">Acknowledments</a>
-	    </div>
-	  </div>
+          <a class="nav-item nav-link" href="index.html#acknowledments">Acknowledments</a>
+        </div>
+      </div>
     </nav>
 
     <main role="main">
-	  <div class="jumbotron jumbotron-fluid bg-white mb-0">
-	    <div class="container">
+      <div class="jumbotron jumbotron-fluid bg-white mb-0">
+        <div class="container">
         <!-- Recent blog posts -->
           <div class="row">
             <div class="col">
               <h2><i class="fa fa-newspaper"></i> Blog</h2>
-		    </div>
-		  </div>
-	    </div>
-	    <br>
+            </div>
+          </div>
+        </div>
+        <br>
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-8">
               <h4>Missing calculation of derivatives on Coursera Deep Learning specialization</h4>
-			
-			  <p class="font-italic text-muted">February 20, 2018</p>
-			  <hr>
+            
+              <p class="font-italic text-muted">February 20, 2018</p>
+              <hr>
               <p>For some reasons Andrew Ng didn't show how to obtain derivatives in back-prop. He showed final results only. I didn't feel good about that. It wasn't a nice feeling to do not understand something from the very beginning. That's why I performed necessary calculation on my own.</p>
-			  <p>Would you like to see how it's done?</p>
-			  <h5>1. Calculation of derivatives for single or last neuron with sigmoid activation function</h5>
-			  <br>
-			  <p>Linear part looks as follows:</p>
-			  <p>$$ 
-			  z^{(i)} 
-			  = w^T x^{(i)} + b
-			  $$</p>
-			  <p>As an activation finction we use sigmoid function \(\sigma\):</p>
-			  <p>$$
-			  \hat{y}^{(i)} 
-			  = \sigma(z^{(i)}) 
-			  = \frac{1}{1 + e^{-z^{(i)}}}
-			  $$</p>
-			  <p>We'll define loss function \(\mathcal{L}\) and cost function \(\mathcal{J}\) as Andrew did that:</p>
-			  <p>$$
-			  \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) 
-			  = -[y^{(i)} log \hat{y}^{(i)} + (1 - y^{(i)}) log(1 - \hat{y}^{(i)})] 
-			  $$</p>
-			  <p>$$
-			  \mathcal{J}(w, b) 
-			  = \frac{1}{m} \sum_{i = 1}^m \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) 
-			  = -\frac{1}{m} \sum_{i = 1}^m [y^{(i)} log \hat{y}^{(i)} + (1 - y^{(i)}) log(1 - \hat{y}^{(i)})] 
-			  $$</p>
-			  <p>Now we calculate the derivative of function \(\mathcal{J}(\sigma(z))\):</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d z}
-			  = \frac{d \mathcal{J}}{d \sigma} \frac{d \sigma}{d z}
-			  $$</p>
-			  <p>The first differentiation:</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d \sigma} 
-			  = -\frac{1}{m} \left( \frac{y}{\sigma} - \frac{1 - y}{1 - \sigma} \right) 
-			  = -\frac{1}{m} \frac{y(1 - \sigma) - \sigma (1 - y)}{\sigma (1 - \sigma)} 
-			  = -\frac{1}{m} \frac{y - \sigma}{\sigma (1 - \sigma)} 
-			  = \frac{1}{m} \frac{\sigma -y}{\sigma (1 - \sigma)}
-			  $$</p>
-			  <p>And second one:</p>
-			  <p>$$
-			  \frac{d \sigma}{d z} 
-			  = \frac{e^{-z}}{{(1 + e^{-z})}^2} 
-			  $$</p>
-			  <p>In the last equation, we must express \(e^{-z}\) as a function of the \(\sigma\) argument:</p>
-			  <p>$$
-			  \sigma(z) 
-			  = \frac{1}{1 + e^{-z}} \Rightarrow \sigma^{-1} 
-			  = 1 + e^{-z} \Rightarrow e^{-z} 
-			  = \sigma^{-1} - 1 
-			  $$</p>
-			  <p>So, we have:</p>
-			  <p>$$
-			  \frac{d \sigma}{d z} 
-			  = \frac{\sigma^{-1} - 1}{\sigma^{-2}} 
-			  = \sigma^2(\sigma^{-1} - 1) 
-			  = \sigma(1 - \sigma) 
-			  $$</p>
-			  <p>Now we combine both derivatives together:</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d z}  
-			  = \frac{d \mathcal{J}}{d \sigma} \frac{d \sigma}{d z} 
-			  = \frac{1}{m} \frac{\sigma - y}{\sigma (1 - \sigma)}  \sigma(1 - \sigma) 
-			  = \frac{1}{m} (\sigma -y)
-			  $$</p>
-			  <p>All we need at the momement is to perform differentiation with respect to \(w\) and \(b\):</p>
-			  <p>$$ 
-			  \frac{\partial \mathcal{J}}{\partial w} = 
-			  \frac{d \mathcal{J}}{d z} \frac{\partial z}{\partial w} 
-			  = \frac{1}{m} (\sigma - y) x 
-			  = x \frac{d \mathcal{J}}{d z}
-			  $$</p>
-			  <p>$$ \frac{\partial \mathcal{J}}{\partial b} 
-			  =  \frac{d \mathcal{J}}{d z} \frac{\partial z}{\partial b} 
-			  = \frac{1}{m} (\sigma - y) 
-			  = \frac{d \mathcal{J}}{d z}
-			  $$</p>
-			  <p>That's all.</p>
-			
-			  <br><br>
-			
-			  <h5>2. Calculation of derivatives for hidden layer</h5>
-			  <br>
-			  <p>For two layers we have forward propagation:</p>
-			  <p>$$
-			  z^{[1]} = w^{[1]} x + b^{[1]} 
-			  \rightarrow 
-			  a^{[1]} = g^{[1]}(z^{[1]}) 
-			  \rightarrow 
-			  z^{[2]} = w^{[2]} a^{[1]} + b^{[2]}
-			  \rightarrow
-			  a^{[2]} = \sigma^{[2]} (z^{[2]})
-			  \rightarrow
-			  \mathcal{L}(a^{[2]}, y)
-			  $$</p>
-			  <p>Derivatives for last layer has been done above and everything is clear:</p>
-			  <p>$$
-			  dz^{[2]} = a^{[2]} - y
-			  $$
-			  $$
-			  dw^{[2]} = dz^{[2]} a^{[1]T}
-			  $$
-			  $$
-			  db^{[2]} = dz^{[2]}
-			  $$</p>
-			  <p>But what about first layer?
-			  Andrew provide us with following formulas:</p>
-			  <p>$$
-			  dz^{[1]} = w^{[2]T} dz^{[2]} \ast g^{[1]'}(z^{[1]})
-			  $$
-			  $$
-			  dw^{[1]} = dz^{[1]} x^T
-			  $$
-			  $$
-			  db^{[1]} = dz^{[1]}
-			  $$</p>
-			  <p>Let's do that!</p>
-			  <p>Chain rule:</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d z^{[2]}} 
-			  = \frac{d \mathcal{J}}{d \sigma^{[2]}} \frac{d \sigma^{[2]}}{d z^{[2]}} 
-			  $$</p>
-			  <p>And again:</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d z^{[1]}} 
-			  = \frac{d \mathcal{J}}{d z^{[2]}} \frac{d z^{[2]}}{d z^{[1]}}
-			  $$</p>
-			  <p>Linear part:</p>
-			  <p>$$
-			  z^{[2]} 
-			  = w^{[2]} a^{[1]} + b^{[2]} 
-			  = w^{[2]} g^{[1]}(z^{[1]}) + b^{[2]}
-			  $$</p>
-			  <p>And we have:</p>
-			  <p>$$
-			  \frac{d z^{[2]}}{d z^{[1]}} 
-			  = w^{[2]T} \frac{d g^{[1]}}{d z^{[1]}}
-			  $$</p>
-			  <p>That's why:</p>
-			  <p>$$
-			  \frac{d \mathcal{J}}{d z^{[1]}}
-			  = \frac{d \mathcal{J}}{d z^{[2]}} \frac{d z^{[2]}}{d z^{[1]}}
-			  = w^{[2]T} \frac{d \mathcal{J}}{d z^{[2]}} \frac{d g^{[1]}}{d z^{[1]}}
-			  $$</p>
-			  <p>And - as before - differentiation with respect to \(w\) and \(b\):</p>
-			  <p>$$
-			  \frac{\partial \mathcal{J}}{\partial w^{[1]}}
-			  = \frac{d \mathcal{J}}{d z^{[1]}} \frac{\partial z^{[1]}}{\partial w^{[1]}}
-			  = \frac{d \mathcal{J}}{d z^{[1]}} x^T
-			  $$</p>
-			  <p>$$
-			  \frac{\partial \mathcal{J}}{\partial b^{[1]}}
-			  = \frac{d \mathcal{J}}{d z^{[1]}} \frac{\partial z^{[1]}}{\partial b^{[1]}}
-			  = \frac{d \mathcal{J}}{d z^{[1]}}
-			  $$</p>
-			  <p>Enjoy!</p>
+              <p>Would you like to see how it's done?</p>
+              <h5>1. Calculation of derivatives for single or last neuron with sigmoid activation function</h5>
+              <br>
+              <p>Linear part looks as follows:</p>
+              <p>$$ 
+              z^{(i)} 
+              = w^T x^{(i)} + b
+              $$</p>
+              <p>As an activation finction we use sigmoid function \(\sigma\):</p>
+              <p>$$
+              \hat{y}^{(i)} 
+              = \sigma(z^{(i)}) 
+              = \frac{1}{1 + e^{-z^{(i)}}}
+              $$</p>
+              <p>We'll define loss function \(\mathcal{L}\) and cost function \(\mathcal{J}\) as Andrew did that:</p>
+              <p>$$
+              \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) 
+              = -[y^{(i)} log \hat{y}^{(i)} + (1 - y^{(i)}) log(1 - \hat{y}^{(i)})] 
+              $$</p>
+              <p>$$
+              \mathcal{J}(w, b) 
+              = \frac{1}{m} \sum_{i = 1}^m \mathcal{L}(\hat{y}^{(i)}, y^{(i)}) 
+              = -\frac{1}{m} \sum_{i = 1}^m [y^{(i)} log \hat{y}^{(i)} + (1 - y^{(i)}) log(1 - \hat{y}^{(i)})] 
+              $$</p>
+              <p>Now we calculate the derivative of function \(\mathcal{J}(\sigma(z))\):</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d z}
+              = \frac{d \mathcal{J}}{d \sigma} \frac{d \sigma}{d z}
+              $$</p>
+              <p>The first differentiation:</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d \sigma} 
+              = -\frac{1}{m} \left( \frac{y}{\sigma} - \frac{1 - y}{1 - \sigma} \right) 
+              = -\frac{1}{m} \frac{y(1 - \sigma) - \sigma (1 - y)}{\sigma (1 - \sigma)} 
+              = -\frac{1}{m} \frac{y - \sigma}{\sigma (1 - \sigma)} 
+              = \frac{1}{m} \frac{\sigma -y}{\sigma (1 - \sigma)}
+              $$</p>
+              <p>And second one:</p>
+              <p>$$
+              \frac{d \sigma}{d z} 
+              = \frac{e^{-z}}{{(1 + e^{-z})}^2} 
+              $$</p>
+              <p>In the last equation, we must express \(e^{-z}\) as a function of the \(\sigma\) argument:</p>
+              <p>$$
+              \sigma(z) 
+              = \frac{1}{1 + e^{-z}} \Rightarrow \sigma^{-1} 
+              = 1 + e^{-z} \Rightarrow e^{-z} 
+              = \sigma^{-1} - 1 
+              $$</p>
+              <p>So, we have:</p>
+              <p>$$
+              \frac{d \sigma}{d z} 
+              = \frac{\sigma^{-1} - 1}{\sigma^{-2}} 
+              = \sigma^2(\sigma^{-1} - 1) 
+              = \sigma(1 - \sigma) 
+              $$</p>
+              <p>Now we combine both derivatives together:</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d z}  
+              = \frac{d \mathcal{J}}{d \sigma} \frac{d \sigma}{d z} 
+              = \frac{1}{m} \frac{\sigma - y}{\sigma (1 - \sigma)}  \sigma(1 - \sigma) 
+              = \frac{1}{m} (\sigma -y)
+              $$</p>
+              <p>All we need at the momement is to perform differentiation with respect to \(w\) and \(b\):</p>
+              <p>$$ 
+              \frac{\partial \mathcal{J}}{\partial w} = 
+              \frac{d \mathcal{J}}{d z} \frac{\partial z}{\partial w} 
+              = \frac{1}{m} (\sigma - y) x 
+              = x \frac{d \mathcal{J}}{d z}
+              $$</p>
+              <p>$$ \frac{\partial \mathcal{J}}{\partial b} 
+              =  \frac{d \mathcal{J}}{d z} \frac{\partial z}{\partial b} 
+              = \frac{1}{m} (\sigma - y) 
+              = \frac{d \mathcal{J}}{d z}
+              $$</p>
+              <p>That's all.</p>
+            
+              <br><br>
+            
+              <h5>2. Calculation of derivatives for hidden layer</h5>
+              <br>
+              <p>For two layers we have forward propagation:</p>
+              <p>$$
+              z^{[1]} = w^{[1]} x + b^{[1]} 
+              \rightarrow 
+              a^{[1]} = g^{[1]}(z^{[1]}) 
+              \rightarrow 
+              z^{[2]} = w^{[2]} a^{[1]} + b^{[2]}
+              \rightarrow
+              a^{[2]} = \sigma^{[2]} (z^{[2]})
+              \rightarrow
+              \mathcal{L}(a^{[2]}, y)
+              $$</p>
+              <p>Derivatives for last layer has been done above and everything is clear:</p>
+              <p>$$
+              dz^{[2]} = a^{[2]} - y
+              $$
+              $$
+              dw^{[2]} = dz^{[2]} a^{[1]T}
+              $$
+              $$
+              db^{[2]} = dz^{[2]}
+              $$</p>
+              <p>But what about first layer?
+              Andrew provide us with following formulas:</p>
+              <p>$$
+              dz^{[1]} = w^{[2]T} dz^{[2]} \ast g^{[1]'}(z^{[1]})
+              $$
+              $$
+              dw^{[1]} = dz^{[1]} x^T
+              $$
+              $$
+              db^{[1]} = dz^{[1]}
+              $$</p>
+              <p>Let's do that!</p>
+              <p>Chain rule:</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d z^{[2]}} 
+              = \frac{d \mathcal{J}}{d \sigma^{[2]}} \frac{d \sigma^{[2]}}{d z^{[2]}} 
+              $$</p>
+              <p>And again:</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d z^{[1]}} 
+              = \frac{d \mathcal{J}}{d z^{[2]}} \frac{d z^{[2]}}{d z^{[1]}}
+              $$</p>
+              <p>Linear part:</p>
+              <p>$$
+              z^{[2]} 
+              = w^{[2]} a^{[1]} + b^{[2]} 
+              = w^{[2]} g^{[1]}(z^{[1]}) + b^{[2]}
+              $$</p>
+              <p>And we have:</p>
+              <p>$$
+              \frac{d z^{[2]}}{d z^{[1]}} 
+              = w^{[2]T} \frac{d g^{[1]}}{d z^{[1]}}
+              $$</p>
+              <p>That's why:</p>
+              <p>$$
+              \frac{d \mathcal{J}}{d z^{[1]}}
+              = \frac{d \mathcal{J}}{d z^{[2]}} \frac{d z^{[2]}}{d z^{[1]}}
+              = w^{[2]T} \frac{d \mathcal{J}}{d z^{[2]}} \frac{d g^{[1]}}{d z^{[1]}}
+              $$</p>
+              <p>And - as before - differentiation with respect to \(w\) and \(b\):</p>
+              <p>$$
+              \frac{\partial \mathcal{J}}{\partial w^{[1]}}
+              = \frac{d \mathcal{J}}{d z^{[1]}} \frac{\partial z^{[1]}}{\partial w^{[1]}}
+              = \frac{d \mathcal{J}}{d z^{[1]}} x^T
+              $$</p>
+              <p>$$
+              \frac{\partial \mathcal{J}}{\partial b^{[1]}}
+              = \frac{d \mathcal{J}}{d z^{[1]}} \frac{\partial z^{[1]}}{\partial b^{[1]}}
+              = \frac{d \mathcal{J}}{d z^{[1]}}
+              $$</p>
+              <p>Enjoy!</p>
             </div>
           </div>
-	    </div>
-	  </div>
-	  
-	  <div id="disqus_thread"></div>
-	  <script>
+        </div>
+      </div>
+      
+      <div id="disqus_thread"></div>
+      <script>
 
 /**
 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
@@ -241,33 +241,33 @@ s.setAttribute('data-timestamp', +new Date());
     </main>
 
     <footer class="footer bg-black">
-	  <div class="container text-center">
-	    <p class="text-muted">
-		<small>
-		  Built using using 
-	      <a href="http://getbootstrap.com/">Bootstrap</a>, 
+      <div class="container text-center">
+        <p class="text-muted">
+        <small>
+          Built using using 
+          <a href="http://getbootstrap.com/">Bootstrap</a>, 
           <a href="http://www.mathjax.org/">MathJax</a>,
-		  <a href="http://fontawesome.com">Font Awesome</a>, and
+          <a href="http://fontawesome.com">Font Awesome</a>, and
           <a href="http://disqus.com/">Disqus</a>. 
-		  <br>
-		  2001: A Space Odyssey theme courtesy <a href="https://screenmusings.org/movie/dvd/2001-A-Space-Odyssey/pages/2001-A-Space-Odyssey-235.htm">screenmusings</a>.
-		<small>
-		</p>
-	  </div>
-	  <div class="container text-center">
+          <br>
+          2001: A Space Odyssey theme courtesy <a href="https://screenmusings.org/movie/dvd/2001-A-Space-Odyssey/pages/2001-A-Space-Odyssey-235.htm">screenmusings</a>.
+        <small>
+        </p>
+      </div>
+      <div class="container text-center">
         Copyright &copy; HALINA9000.com 2018
-		<br>
-		&nbsp;
+        <br>
+        &nbsp;
       </div>
     </footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	<link href='https://fonts.googleapis.com/css?family=Slabo+27px&subset=latin' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px&subset=latin' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
   </body>
