@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- MathJax -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+    <title>HALINA9000 - Blog - Caviar strategy in single neuron training - analysis of Coursera cat detector.</title>
+    <meta name="description" content="Caviar strategy in single neuron training - analysis of Coursera cat detector.">
+    <meta name="keywords" content="caviar strategy,deep learning,machine learning,ai,artificial intelligence,coursera,calculus,math,andrew ng,halina9000,blog">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light border-bottom">
+      <div class="container">
+        <a class="navbar-brand text-monospace text-dark mr-0 pr-0" href="index.html#">HALINA9000</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <a class="nav-item nav-link" href="index.html#">Home</a>
+          <a class="nav-item nav-link" href="index.html#blog"></i>Blog</a>
+          <a class="nav-item nav-link" href="index.html#about">About</a>
+          <a class="nav-item nav-link" href="index.html#certificates">Certificates</a>
+          <a class="nav-item nav-link" href="index.html#contact">Contact</a>
+          <a class="nav-item nav-link" href="index.html#acknowledments">Acknowledments</a>
+        </div>
+      </div>
+    </nav>
+
+    <main role="main">
+      <div class="jumbotron jumbotron-fluid bg-white mb-0">
+        <div class="container">
+        <!-- Recent blog posts -->
+          <div class="row">
+            <div class="col">
+              <h2><i class="fa fa-newspaper"></i> Blog</h2>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <h4>Caviar strategy in single neuron training - analysis of Coursera cat detector.</h4>
+            
+              <p class="font-italic text-muted">started: March 20, 2018<br>last modified: September 11, 2018</p>
+              <hr>
+			  <!-- NEW LEAD -->
+			  <p>Here you'll find results of my own experiments inspired by programming assignment from first course of Coursera Deep Learning specialization - cat detector.</p>
+			  <p>Initial play with hyperparameters and - later - more systematic search led me to much better accuracy and interesting observations.
+			  </p>
+			  <!-- END OF LEAD -->
+			  
+			  <br><br>
+			  
+			  <h5>Content</h5>
+			  <br>
+			  <p>
+				0. <a href="#0">Loading libraries and datasets</a>
+				<br>
+				1. <a href="#1">Description of the original problem</a>
+				<br>
+				2. <a href="#2">Optimal batch size</a>
+				<br>
+				3. <a href="#3">Original programming assignment in Keras and its results</a>
+				<br>
+				4. <a href="#4">Original assignment with random initialization</a>
+				<br>
+				5. <a href="#5">Comparison of results</a>
+				<br>
+				6. <a href="#6">Learning rate tuning</a>
+				<br>
+				7. <a href="#7">Random sampling of hypersurface</a>
+				<br>
+				8. <a href="#8">Comparison of results with all related tasks from the course</a>
+				<br>
+				9. <a href="#9">Analysis of best weights</a>
+				
+			  </p>
+			  <div id="0"></div>
+			  <br><br><br>
+			  
+			  <h5>0. Loading libraries and datasets</h5>
+			  <br>
+			  <p>Before we'll go any further let's load necessary libraries. Then load both training and test datasets.</p>
+			  <script src="https://gist.github.com/HALINA9000/0d1fe83b4b217f77fe0ba91646057a93.js"></script>
+			  <script src="https://gist.github.com/HALINA9000/bbe549a657e1a7ccb948fe4768266d03.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#load_data" aria-expanded="false" aria-controls="load_data">
+				  <samp>load_data</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="load_data">
+			    <script src="https://gist.github.com/HALINA9000/7eea672b51089a0c75aa123c2d8d4dba.js"></script>
+			  </div>
+			  
+			  <div id="1"></div>
+			  <br><br><br>
+			  
+			  <h5>1. Description of the original problem</h5>
+			  <br>
+			  <p>The initial task was to teach the neuron to recognize the cat on image. It was just single neuron with sigmoid activation function. Both train and test image datasets were provided by Coursera. All images are RGB, 64 &times; 64 pixels.</p>
+			  <p>Quick view what we have inside both datasets:</p>
+			  <script src="https://gist.github.com/HALINA9000/d7e6c9254cc7d8891da8748863cfe8dd.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#show_data_stats" aria-expanded="false" aria-controls="show_data_stats">
+				  <samp>show_data_stats</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="show_data_stats">
+			    <script src="https://gist.github.com/HALINA9000/2dc3853ea855318e73828687e7db733f.js"></script>
+			  </div>
+			  <pre>Cat images in training set: 34% (72/209).<br>Cat images in testing set: 66% (33/50).</pre>
+			  <br>
+			  <p>So, we have small amount of images. Additionally - proportion of cat vs. non-cat images in both datasets is different. That's a bit surprising and troublesome - what is baseline value in this case? But let's continue with no changes.</p>
+			  
+			  <div id="2"></div>
+			  <br><br><br>
+			  
+			  <h5>2. Optimal batch size</h5>
+			  <br>
+			  <p>Now it is worth to determine optimal i.e most efficient batch size.</p>
+			  <script src="https://gist.github.com/HALINA9000/02551ff67f13ffd4172547b7fc16f5c9.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#best_batch_size" aria-expanded="false" aria-controls="best_batch_size">
+				  <samp>best_batch_size</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="best_batch_size">
+			    <script src="https://gist.github.com/HALINA9000/47d01439f8b0ee01f35cd349fb621642.js"></script>
+			  </div>
+			  <pre>size:    time:<br>----- --------<br>  256   6.3744<br>  128   7.0324<br>   64   7.9375<br>   32   8.4335<br>Most efficient batch size is: 256</pre>
+			  <br>
+			  <p>With batch size equal to 256 samples we only need 76% of time  compared to the default value in Keras i.e. 32.</p>
+			  
+			  <div id="3"></div>
+			  <br><br><br>
+			  
+			  <h5>3. Original programming assignment in Keras and its results</h5>
+			  <br>
+			  <p>Let's recreate the original task from the course but in Keras!</p>
+			  <script src="https://gist.github.com/HALINA9000/224f8e57e52f4b7bb6c356c89bf8b950.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#course_assignment" aria-expanded="false" aria-controls="course_assignment">
+				  <samp>course_assignment</samp> function source
+			    </button>
+				<button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#history_plot" aria-expanded="false" aria-controls="history_plot">
+				  <samp>history_plot</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="course_assignment">
+			    <script src="https://gist.github.com/HALINA9000/ec70fb4e7940742a7b46ed6e70039301.js"></script>
+			  </div>
+			  <div class="collapse" id="history_plot">
+			    <script src="https://gist.github.com/HALINA9000/9fbc464e5632996e78c59d1b61309175.js"></script>
+			  </div>
+			  <div class="container text-center col-lg-9 col-sm-auto">
+			    <div class="card mb-4 shadow">
+			      <img src="img/blog/0001/Original_course_assignment_results.svg" class="img-fluid img-thumbnail" alt="Original course assignment results">
+				</div>
+			  </div>
+			  <br>
+			  <p>OK. It's done. After 2000 iterations with learning rate = 0.005 we have almost 100% accuracy on training set (blue line) and 70% on test set (orange line). 
+			  That means we have correctly recreated original assignment from the course.</p>
+			  <p>But the chart above provide us with few additional observations:</p>
+			  <ul>
+                <li>
+                  <p>Overfitting</p>
+                  <p>It is easy to notice that after initial period accuracy on training set goes up while accuracy on test set goes down. The difference is almost 30%.</p>
+                </li>
+                <li>
+                  <p>Instability</p>
+                  <p>Up to iteration 350 both charts behave very chaotically.</p>
+                </li>
+				<li>
+                  <p>Similar values at early stage</p>
+                  <p>Both accuracies achieved very similar value (about 80%) near iteration 250.</p>
+                </li>
+              </ul>
+			  
+			  <div id="4"></div>
+			  <br><br><br>
+			  
+			  <h5>4. Original assignment with random initialization</h5>
+			  <br>
+			  <p>And now with random initialization:</p>
+			  <script src="https://gist.github.com/HALINA9000/aa016ece93f8cb4090163e0ca28e09d3.js"></script>
+			  <div class="container text-center col-lg-9 col-sm-auto">
+			    <div class="card mb-4 shadow">
+			      <img src="img/blog/0001/Modified_course_assignment_results.svg" class="img-fluid img-thumbnail" alt="Course assignment results with random initialization">
+				</div>
+			  </div>
+			  <br>
+			  <p>The chart looks similar but is not identical to the previous one. A common features are overfitting and chaotic behavior in the early epochs.</p>
+			  
+			  <div id="5"></div>
+			  <br><br><br>
+			  
+			  <h5>5. Comparison of results</h5>
+			  <br>
+			  <p>It's time to explain the role of custom callback BestAccs.</p>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#BestAccs" aria-expanded="false" aria-controls="BestAccs">
+				  <samp>BestAccs</samp> class source
+			    </button>
+			  </p>
+			  <div class="collapse" id="BestAccs">
+			    <script src="https://gist.github.com/HALINA9000/3c0be8f4bd6531255a00a58b5e956cb8.js"></script>
+			  </div>
+			  <p>It has been created to find and save as h5 file weight values when model has good accuracy on both training and test set. Additional criterion is small difference between both accuracies. In both cases above good accuracy means greater or equal to 0.7 with maximum difference 0.02.<p>
+			  <p>Let's find best files and corresponding weights for 'zeros' and 'random_uniform' initialization. Next check what is the distance between them.</p>
+			  <script src="https://gist.github.com/HALINA9000/7dc95cdd59594b8f3bbe61bd273fe6cc.js"></script>
+			  <pre>Best weight with zero initialization in 0.775-0.775-0.780-zeros.h5 file.<br>Best weight with random initialization in 0.760-0.761-0.760-random_uniform.h5 file.</pre>
+			  <p>Second number in each file name is accuracy on training set, third number - on test set. First number is their minimum. This form of file name will be very usefull soon.</p>
+			  <p>In both cases we have quite similar accuracy. Do both vectors (kernels) points to the same minimum?</p>
+			  <script src="https://gist.github.com/HALINA9000/00fea08efc674bfe47a649a933def234.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#compare_kernels" aria-expanded="false" aria-controls="compare_kernels">
+				  <samp>compare_kernels</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="compare_kernels">
+			    <script src="https://gist.github.com/HALINA9000/922d6a4d12cb7b7c6b8d5280f3bc058b.js"></script>
+			  </div>
+			  <pre>Norm of kernel with zeros initialization:  0.5559<br>Norm of kernel with random initialization: 3.2190<br>Norm of vector difference between them:    3.1748<br>Angle between kernels (rad):               1.4047</pre>
+			  <p>It seems we have two different minimums. It shouldn't be surprise. A cat is is complex enough creature to have more than one features that allow to distinguish it from other objects.</p>
+			  
+			  <div id="6"></div>
+			  <br><br><br>
+			  
+			  <h5>6. Learning rate tuning</h5>
+			  <br>
+			  <p>Let's find out which learning rate will be the best i.e. gives the most chaotic accuracy chart.</p>
+			  <script src="https://gist.github.com/HALINA9000/018899fcfec093aa7d1e2ad59e54d64a.js"></script>
+			  <p>
+			    <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#best_learning_rate" aria-expanded="false" aria-controls="best_learning_rate">
+				  <samp>best_learning_rate</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="best_learning_rate">
+			    <script src="https://gist.github.com/HALINA9000/ca52fea08f67540c9f4768f2ca9898dc.js"></script>
+			  </div>
+			  <div class="container">
+			    <div class="card-deck mb-2 text-center">  
+				  <div class="card mb-4 shadow">
+				    <img class="card-img-top" src="img/blog/0001/Learning_rate_0.1.svg" alt="Learning rate 0.1">
+				  </div>
+
+				  <div class="w-100 d-none d-xl-none d-lg-none d-md-block d-sm-block"></div>
+			  
+				  <div class="card mb-4 shadow">
+				    <img class="card-img-top" src="img/blog/0001/Learning_rate_0.01.svg" alt="Learning rate 0.01">
+				  </div>
+	 
+				  <div class="w-100 d-none d-xl-block d-lg-block d-md-block d-sm-block"></div>
+	 
+				  <div class="card mb-4 shadow">
+				    <img class="card-img-top" src="img/blog/0001/Learning_rate_0.001.svg" alt="Learning rate 0.001">
+				  </div>
+				
+				  <div class="w-100 d-none d-xl-none d-lg-none d-md-block d-sm-block"></div>
+			  
+				  <div class="card mb-4 shadow">
+				    <img class="card-img-top" src="img/blog/0001/Learning_rate_0.0001.svg" alt="Learning rate 0.0001">
+			      </div>
+				</div>
+			  </div>
+			  			  
+			  <div id="7"></div>
+			  <br><br><br>
+			  
+			  <h5>7. Random sampling of hypersurface</h5>
+			  <br>
+			  <p>Learning rate equal to 0.1 does produce the most noisy chart. OK, let's proceed with that value!</p>
+			  <script src="https://gist.github.com/HALINA9000/0646a9b5a1232f8f415dc76a2a657fef.js"></script>
+			  	<button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#sampling_hypersurface" aria-expanded="false" aria-controls="sampling_hypersurface">
+				  <samp>sampling_hypersurface</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="sampling_hypersurface">
+			    <script src="https://gist.github.com/HALINA9000/7c8cb82fc07c0b35a5b3c8d7fcda58ce.js"></script>
+			  </div>
+			  <p>I ran this code many times. It means sampling has been performed many thousands of times. And the best result is:</p>
+			  <script src="https://gist.github.com/HALINA9000/17c13640917a8851cf83ba445ae624bc.js"></script>
+			  <pre><a href="img/blog/0001/0.920-0.938-0.920-iteration-156.h5">0.920-0.938-0.920-iteration-156.h5</a></pre>
+			  <p>In fact this file has a bit different accuracy.</p>
+			  <p>It's due to moment when accuracy has been measured by BestAccs callback.</p>
+			  <script src="https://gist.github.com/HALINA9000/7c04e0f2f089fc35051e06c023f62819.js"></script>
+			  	<button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#best_model_evaluate" aria-expanded="false" aria-controls="best_model_evaluate">
+				  <samp>best_model_evaluate</samp> function source
+			    </button>
+			  </p>
+			  <div class="collapse" id="best_model_evaluate">
+			    <script src="https://gist.github.com/HALINA9000/4c9a1f8ba36464012e774217b2739dfa.js"></script>
+			  </div>
+			  <pre>Accuracy on training set: 0.947<br>Accuracy on test set:     0.920</pre>
+			  <p>It is worth emphasizing that the results are obtained with no regularization and data augmentation.</p>
+			  			  
+			  <div id="8"></div>
+			  <br><br><br>
+			  
+			  <h5>8. Comparison of results with all related tasks from the course</h5>
+			  <br>
+			  <p>Later in the course more complex networks were trained to use as cat detector:
+			    <ul>
+				  <li>2-layer network with 7 neurons on 1st layer and 1 neuron on 2nd layer</li>
+				  <li>4-layer network with 20 neurons on 1st layer and then 7 neurons, 5 and finally 1</li>
+				</ul>
+				Below we have a summary of results.</p>
+			  <table class="table">
+			    <thead>
+				  <tr>
+				    <th scope="col">dataset</th>
+				    <th scope="col">1&nbsp;neuron<br>(1)<br>caviar strategy</th>
+				    <th scope="col">1 neuron<br>(1)<br>original course assignment</th>
+				    <th scope="col">2 layers<br>(7, 1)<br>original course assignment</th>
+				    <th scope="col">4 layers<br>(20, 7, 5, 1)<br>original course assignment</th>
+				  </tr>
+			    </thead>
+			    <tbody>
+				  <tr>
+				    <th scope="row">training</th>
+				    <td>0.947</td>
+				    <td>0.990</td>
+				    <td>1.000</td>
+				    <td>0.986</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">test</th>
+				    <td>0.920</td>
+				    <td>0.700</td>
+				    <td>0.720</td>
+				    <td>0.800</td>
+				  </tr>
+			    </tbody>
+			  </table>
+						  			  
+			  <div id="9"></div>
+			  <br><br><br>
+			  
+			  <h5>9. Analysis of best weights</h5>
+			  <br>
+			  <p>Now let's choose weights with accuracy on both training and test datasets >= 90%</p>
+			  <script src="https://gist.github.com/HALINA9000/74003d0c24d384586a16973ef8fa3e98.js"></script>
+			  <pre>Angles between vectors<br>Minimum: 1.5215<br>Maximum: 1.5655</pre>
+			  <pre>Norm of vectors<br>Minimum: 64.0330<br>Maximum: 65.2384</pre>
+			  <pre>Norm of difference between vectors<br>Minimum: 89.1946<br>Maximum: 91.3843</pre>
+			  
+			  
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <div  id="disqus_thread"></div>
+            </div>
+          </div>
+        </div>
+      <script>
+
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        /*
+        var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        */
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://halina9000.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                      
+      <hr>
+
+    </main>
+
+    <footer class="footer bg-black">
+      <div class="container text-center">
+        <p class="text-muted">
+        <small>
+          Built using 
+          <a href="http://getbootstrap.com/">Bootstrap</a>, 
+          <a href="http://www.mathjax.org/">MathJax</a>,
+          <a href="http://fontawesome.com">Font Awesome</a>, and
+          <a href="http://disqus.com/">Disqus</a>. 
+          <br>
+          2001: A Space Odyssey theme courtesy <a href="https://screenmusings.org/movie/dvd/2001-A-Space-Odyssey/pages/2001-A-Space-Odyssey-235.htm">screenmusings</a>.
+        <small>
+        </p>
+      </div>
+      <div class="container text-center">
+        Copyright &copy; HALINA9000.com 2018
+        <br>
+        &nbsp;
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px&subset=latin' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  </body>
+</html>
