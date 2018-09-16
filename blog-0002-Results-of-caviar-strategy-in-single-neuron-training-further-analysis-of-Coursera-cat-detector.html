@@ -13,8 +13,8 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- Custom styles for this template -->
     <link href="jumbotron.css" rel="stylesheet">
-    <title>HALINA9000 - Blog - Caviar strategy in single neuron training - analysis of Coursera cat detector.</title>
-    <meta name="description" content="Caviar strategy in single neuron training - analysis of Coursera cat detector.">
+    <title>HALINA9000 - Blog - Caviar strategy with Early Stopping in single neuron training - analysis of Coursera cat detector.</title>
+    <meta name="description" content="Caviar strategy with Early Stopping in single neuron training - analysis of Coursera cat detector.">
     <meta name="keywords" content="caviar strategy,deep learning,machine learning,ai,artificial intelligence,coursera,calculus,math,andrew ng,halina9000,blog">
   </head>
 
@@ -51,7 +51,7 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-10">
-              <h4>Caviar strategy in single neuron training - analysis of Coursera cat detector.</h4>
+              <h4>Caviar strategy with Early Stopping in single neuron training - analysis of Coursera cat detector.</h4>
             
               <p class="font-italic text-muted">started: March 20, 2018<br>last modified: September 16, 2018</p>
               <hr>
@@ -59,7 +59,7 @@
 			  <p>Here you'll find results of my own experiments inspired by programming assignment from first course of Coursera Deep Learning specialization - cat detector.</p>
 			  <p>Initial play with hyperparameters and - later - more systematic search led me to much better accuracy and interesting observations.
 			  </p>
-			  <p>All files you'll find here: <a href="https://github.com/HALINA9000/ai.exp.0001.cat_detector">https://github.com/HALINA9000/ai.exp.0001.cat_detector</a></p>
+			  <p>All necessary files you'll find here: <a href="https://github.com/HALINA9000/ai.exp.0001.cat_detector">https://github.com/HALINA9000/ai.exp.0001.cat_detector</a></p>
 			  <!-- END OF LEAD -->
 			  
 			  <br><br>
@@ -219,6 +219,7 @@
 			    <script src="https://gist.github.com/HALINA9000/3c0be8f4bd6531255a00a58b5e956cb8.js"></script>
 			  </div>
 			  <p>It has been created to find and save as h5 file weight values when model has good accuracy on both training and test set. Additional criterion is small difference between both accuracies. In both cases above good accuracy means greater or equal to 0.7 with maximum difference 0.02.<p>
+			  <p>In other words: it performs Early Stopping. It works in similar way as standard Keras callback: ModelCheckpoint. But ModelCheckpoint takes into consideration only one of both accuracies and has no lower accuracy limit when weights are going to be saved.</p>
 			  <p>Let's find best files and corresponding weights for 'zeros' and 'random_uniform' initialization. Next check what is the distance between them.</p>
 			  <script src="https://gist.github.com/HALINA9000/7dc95cdd59594b8f3bbe61bd273fe6cc.js"></script>
 			  <pre>Best weight with zero initialization in 0.78-0.78-0.78-zeros.h5 file.<br>Best weight with random initialization in 0.78-0.79-0.78-random_uniform.h5 file.</pre>
