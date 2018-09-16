@@ -53,12 +53,13 @@
             <div class="col-10">
               <h4>Caviar strategy in single neuron training - analysis of Coursera cat detector.</h4>
             
-              <p class="font-italic text-muted">started: March 20, 2018<br>last modified: September 11, 2018</p>
+              <p class="font-italic text-muted">started: March 20, 2018<br>last modified: September 16, 2018</p>
               <hr>
 			  <!-- NEW LEAD -->
 			  <p>Here you'll find results of my own experiments inspired by programming assignment from first course of Coursera Deep Learning specialization - cat detector.</p>
 			  <p>Initial play with hyperparameters and - later - more systematic search led me to much better accuracy and interesting observations.
 			  </p>
+			  <p>All files you'll find here: <a href="https://github.com/HALINA9000/ai.exp.0001.cat_detector">https://github.com/HALINA9000/ai.exp.0001.cat_detector</a></p>
 			  <!-- END OF LEAD -->
 			  
 			  <br><br>
@@ -220,7 +221,7 @@
 			  <p>It has been created to find and save as h5 file weight values when model has good accuracy on both training and test set. Additional criterion is small difference between both accuracies. In both cases above good accuracy means greater or equal to 0.7 with maximum difference 0.02.<p>
 			  <p>Let's find best files and corresponding weights for 'zeros' and 'random_uniform' initialization. Next check what is the distance between them.</p>
 			  <script src="https://gist.github.com/HALINA9000/7dc95cdd59594b8f3bbe61bd273fe6cc.js"></script>
-			  <pre>Best weight with zero initialization in 0.775-0.775-0.780-zeros.h5 file.<br>Best weight with random initialization in 0.760-0.761-0.760-random_uniform.h5 file.</pre>
+			  <pre>Best weight with zero initialization in 0.78-0.78-0.78-zeros.h5 file.<br>Best weight with random initialization in 0.78-0.79-0.78-random_uniform.h5 file.</pre>
 			  <p>Second number in each file name is accuracy on training set, third number - on test set. First number is their minimum. This form of file name will be very usefull soon.</p>
 			  <p>In both cases we have quite similar accuracy. Do both vectors (kernels) points to the same minimum?</p>
 			  <script src="https://gist.github.com/HALINA9000/00fea08efc674bfe47a649a933def234.js"></script>
@@ -232,7 +233,7 @@
 			  <div class="collapse" id="compare_kernels">
 			    <script src="https://gist.github.com/HALINA9000/922d6a4d12cb7b7c6b8d5280f3bc058b.js"></script>
 			  </div>
-			  <pre>Norm of kernel with zeros initialization:  0.5559<br>Norm of kernel with random initialization: 3.2190<br>Norm of vector difference between them:    3.1748<br>Angle between kernels (rad):               1.4047</pre>
+			  <pre>Norm of kernel with zeros initialization:  0.5559<br>Norm of kernel with random initialization: 3.2183<br>Norm of vector difference between them:    3.1710<br>Angle between kernels (rad):               1.3990</pre>
 			  <p>It seems we have two different minimums. It shouldn't be surprise. A cat is is complex enough creature to have more than one features that allow to distinguish it from other objects.</p>
 			  
 			  <div id="6"></div>
@@ -292,7 +293,7 @@
 			  </div>
 			  <p>I ran this code many times. It means sampling has been performed many thousands of times. And the best result is:</p>
 			  <script src="https://gist.github.com/HALINA9000/17c13640917a8851cf83ba445ae624bc.js"></script>
-			  <pre><a href="img/blog/0002/0.920-0.938-0.920-iteration-156.h5">0.920-0.938-0.920-iteration-156.h5</a></pre>
+			  <pre><a href="img/blog/0002/0.92-0.93-0.92-iteration-156.h5">0.92-0.93-0.92-iteration-156.h5</a></pre>
 			  <p>In fact this file has a bit different accuracy.</p>
 			  <p>It's due to moment when accuracy has been measured by BestAccs callback.</p>
 			  <script src="https://gist.github.com/HALINA9000/7c04e0f2f089fc35051e06c023f62819.js"></script>
@@ -355,6 +356,9 @@
 			  <pre>Angles between vectors<br>Minimum: 1.5215<br>Maximum: 1.5655</pre>
 			  <pre>Norm of vectors<br>Minimum: 64.0330<br>Maximum: 65.2384</pre>
 			  <pre>Norm of difference between vectors<br>Minimum: 89.1946<br>Maximum: 91.3843</pre>
+			  <p>That's serious surprise for me. I expected different points on analyzed hypersurface. But we have something more: all vectors have very similar norm (length) and are almost orthogonal! And  I have no idea what does that mean. <u>Not yet.</u></p>
+			  <br>
+			  <p class="text-muted"><em>To be continued...</em></p>
 			  
 			  
             </div>
